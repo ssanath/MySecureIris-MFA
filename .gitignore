@@ -1,0 +1,19 @@
+# Node/React
+client/node_modules/
+client/.env
+
+# Python
+irisenv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Debug/output
+debug_iris/
+mongo/
+*.log
+*.txt
+
+# macOS
+.DS_Store
+

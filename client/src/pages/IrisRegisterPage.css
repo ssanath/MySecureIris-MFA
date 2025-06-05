@@ -1,0 +1,23 @@
+.iris-register-container {
+  max-width: 400px;
+  margin: 80px auto;
+  background-color: #111;
+  color: white;
+  padding: 30px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.iris-register-container button {
+  padding: 10px 20px;
+  font-weight: bold;
+  background-color: #3f51b5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.iris-register-container button:hover {
+  background-color: #303f9f;
+}
