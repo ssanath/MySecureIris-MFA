@@ -1,5 +1,4 @@
-# server/routes/auth_routes.py
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from controllers.auth_controller import (
     register_user, send_otp, verify_otp, verify_password
 )
@@ -30,3 +29,9 @@ def verify_otp_route():
 def verify_password_route():
     data = request.get_json()
     return verify_password(data)
+
+# 🔐 Get Client IP (for fake page logging)
+@auth_bp.route("/get-ip", methods=["GET"])
+def get_ip():
+    ip = request.remote_addr
+    return jsonify({"ip": ip})

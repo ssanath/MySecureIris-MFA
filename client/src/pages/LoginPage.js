@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./LoginPage.css";
@@ -10,7 +10,20 @@ function LoginPage() {
   const [otpVerified, setOtpVerified] = useState(false);
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [shake, setShake] = useState(false);
   const navigate = useNavigate();
+
+  const logIpAndRedirect = async () => {
+    try {
+      await axios.post("/api/auth/log-ip", { email });
+    } catch (err) {
+      console.error("IP logging failed");
+    }
+    setShake(true);
+    setTimeout(() => {
+      navigate("/fake");
+    }, 1000);
+  };
 
   const handleSendOTP = async () => {
     try {
@@ -36,9 +49,8 @@ function LoginPage() {
         setOtpVerified(true);
       } else {
         setMessage("❌ " + response.data.message);
-
         if (response.data.message.includes("3 wrong attempts")) {
-          navigate("/fake"); // redirect to trap page
+          await logIpAndRedirect();
         }
       }
     } catch (error) {
@@ -46,7 +58,7 @@ function LoginPage() {
       setMessage("❌ " + msg);
 
       if (error.response?.status === 403) {
-        navigate("/fake"); // redirect to trap page
+        await logIpAndRedirect();
       }
     }
   };
@@ -64,7 +76,7 @@ function LoginPage() {
 
   return (
     <div className="login-container">
-      <div className="login-card">
+      <div className={`login-card ${shake ? "shake" : ""}`}>
         <h2>Login</h2>
 
         <input
