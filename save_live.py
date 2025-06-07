@@ -12,7 +12,7 @@ if eye_cascade.empty():
     print("❌ Haar cascade not found or failed to load.")
     exit(1)
 
-# Ensure output folder exists
+# Ensure output directory exists
 os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
 # Start webcam
@@ -28,9 +28,8 @@ while True:
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     eyes = eye_cascade.detectMultiScale(gray, 1.3, 5)
 
-    # Draw rectangle on detected eye
     for (x, y, w, h) in eyes:
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
         break
 
     cv2.imshow("Live Iris Capture", frame)

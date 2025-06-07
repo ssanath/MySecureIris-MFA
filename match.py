@@ -2,7 +2,7 @@ import cv2
 import os
 import numpy as np
 
-# Get absolute paths for both iris images
+# Absolute paths to both iris images
 project_root = os.path.dirname(os.path.abspath(__file__))
 registered_path = os.path.join(project_root, "debug_iris", "registered.png")
 live_path = os.path.join(project_root, "debug_iris", "live.png")
@@ -17,22 +17,22 @@ def load_grayscale_image(path):
         return None
     return cv2.resize(img, (64, 64))
 
-# Load images
+# Load both images
 registered = load_grayscale_image(registered_path)
 live = load_grayscale_image(live_path)
 
 if registered is None or live is None:
-    print("❌ Iris images not found or invalid format.")
+    print("❌ Iris images not found or invalid.")
     exit(1)
 
-# Compute mean absolute pixel difference
+# Compare pixel-wise difference
 diff = np.abs(registered.astype(np.int32) - live.astype(np.int32))
 score = np.mean(diff)
 
 print(f"🔎 Similarity Score: {int(score)}")
 
-# Matching threshold (adjust based on real test data)
-THRESHOLD = 20  # lower = stricter match
+# Threshold for match decision
+THRESHOLD = 30  # You can adjust based on real test data
 
 if score < THRESHOLD:
     print("✅ Iris Match Found!")

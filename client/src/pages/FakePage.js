@@ -1,16 +1,17 @@
-// FakePage.js - base file
-// FakePage.js – redirect target after honeypot trap
 import React from "react";
-import "./FakePage.css";
+import "./FakePage.css"; // optional styling
 
-function FakePage() {
+const FakePage = () => {
   return (
     <div className="fake-container">
-      <h2>🚫 Suspicious Access Detected</h2>
-      <p>Your session has been terminated due to multiple invalid attempts.</p>
-      <p>If you believe this is a mistake, contact admin at <a href="mailto:support@secureiris.com">support@secureiris.com</a></p>
+      <h1>🚫 Access Denied</h1>
+      <p>
+        Suspicious activity detected. You have been redirected to a secure
+        endpoint.
+      </p>
+      <p>This attempt has been logged for security auditing.</p>
     </div>
   );
-}
+};
 
 export default FakePage;

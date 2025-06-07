@@ -5,8 +5,8 @@ import os
 output_dir = os.path.join(os.getcwd(), "debug_iris")
 os.makedirs(output_dir, exist_ok=True)
 
-# Load Haar cascade for eye detection
-cascade_path = os.path.join("server", "utils", "haarcascade_eye.xml")
+# ✅ Load Haar cascade using absolute path
+cascade_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "server", "utils", "haarcascade_eye.xml"))
 eye_cascade = cv2.CascadeClassifier(cascade_path)
 
 # Start webcam

@@ -1,17 +1,21 @@
-/* FakePage.css */
 .fake-container {
-  max-width: 500px;
-  margin: 80px auto;
-  background-color: #1a0000;
-  color: #ff4d4d;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 25px rgba(255, 0, 0, 0.5);
-  text-align: center;
-  font-family: "Segoe UI", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #111;
+  color: #fff;
 }
 
-.fake-container a {
-  color: #ff9999;
-  text-decoration: underline;
+.fake-card {
+  background: #222;
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+  border: 2px solid red;
+}
+
+.fake-card h1 {
+  color: red;
+  margin-bottom: 20px;
 }

@@ -26,14 +26,14 @@ function RegisterPage() {
     setMessage("");
 
     try {
-      const response = await axios.post("http://localhost:5050/api/auth/register", {
+      const response = await axios.post("/api/auth/register", {
         email,
         password,
       });
 
       if (response.data.success) {
         setMessage("✅ Registered successfully! Redirecting to login...");
-        localStorage.setItem("email", email); // Save for OTP or iris steps
+        localStorage.setItem("email", email);
         setEmail("");
         setPassword("");
         setConfirmPassword("");

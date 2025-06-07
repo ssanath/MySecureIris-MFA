@@ -14,7 +14,7 @@ function LoginPage() {
 
   const handleSendOTP = async () => {
     try {
-      const response = await axios.post("http://localhost:5050/send-otp", { email });
+      const response = await axios.post("/api/auth/send-otp", { email });
       if (response.data.success) {
         setMessage("✅ OTP sent to your email.");
         setOtpSent(true);
@@ -29,15 +29,25 @@ function LoginPage() {
 
   const handleVerifyOTP = async () => {
     try {
-      const response = await axios.post("http://localhost:5050/verify-otp", { email, otp });
+      const response = await axios.post("/api/auth/verify-otp", { email, otp });
+
       if (response.data.success) {
         setMessage("✅ OTP verified. Please enter your password.");
         setOtpVerified(true);
       } else {
         setMessage("❌ " + response.data.message);
+
+        if (response.data.message.includes("3 wrong attempts")) {
+          navigate("/fake"); // redirect to trap page
+        }
       }
-    } catch {
-      setMessage("🚫 OTP verification failed.");
+    } catch (error) {
+      const msg = error.response?.data?.message || "🚫 OTP verification failed.";
+      setMessage("❌ " + msg);
+
+      if (error.response?.status === 403) {
+        navigate("/fake"); // redirect to trap page
+      }
     }
   };
 

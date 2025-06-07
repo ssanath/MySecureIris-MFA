@@ -1,21 +1,20 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // react-router-dom v6
+import { useNavigate } from "react-router-dom";
 
 export default function IrisVerifyPage() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();  // hook for navigation
+  const navigate = useNavigate();
 
   const handleVerify = async () => {
     setLoading(true);
     setMessage("");
 
     try {
-      const res = await axios.post("http://localhost:5050/iris-verify");
+      const res = await axios.post("/api/iris/verify");
       if (res.data.success) {
         setMessage("✅ Iris verified successfully!");
-        // Redirect to dashboard after 1.5 seconds
         setTimeout(() => {
           navigate("/dashboard");
         }, 1500);
@@ -23,6 +22,7 @@ export default function IrisVerifyPage() {
         setMessage("❌ " + res.data.message);
       }
     } catch (err) {
+      console.error("Iris verification error:", err);
       setMessage("❌ Iris verification failed");
     } finally {
       setLoading(false);
