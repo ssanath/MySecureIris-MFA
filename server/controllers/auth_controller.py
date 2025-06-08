@@ -3,15 +3,17 @@ import cv2
 import base64
 import numpy as np
 import bcrypt
-from flask import jsonify
+from flask import jsonify, request
 from bson.objectid import ObjectId
 from models.user_model import users_collection
 from utils.otp_util import (
     generate_otp, send_otp_email, otp_store,
     get_otp_for, increment_attempt, reset_attempts
 )
+from db import db
+users_collection = db["users"]
 
-# Load Haar Cascade once
+
 CASCADE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../utils/haarcascade_eye.xml"))
 eye_cascade = cv2.CascadeClassifier(CASCADE_PATH)
 
@@ -52,7 +54,10 @@ def register_user(data):
         "user_id": user_id,
         "email": email,
         "password": hashed_pw.decode("utf-8"),
-        "iris_image": None
+        "iris_image": None,
+        "otp_attempts": 0,
+        "blocked": False,
+        "blocked_ip": None
     })
     return jsonify({"success": True, "message": "User registered"}), 201
 
@@ -62,8 +67,11 @@ def send_otp(data):
     email = data.get("email")
     if not email:
         return jsonify({"success": False, "message": "Email required"}), 400
-    if not users_collection.find_one({"email": email}):
+    user = users_collection.find_one({"email": email})
+    if not user:
         return jsonify({"success": False, "message": "User not found"}), 404
+    if user.get("blocked"):
+        return jsonify({"success": False, "message": "User is blocked"}), 403
     otp = generate_otp()
     otp_store[email] = otp
     print(f"DEBUG OTP: {otp} for {email}")
@@ -77,17 +85,31 @@ def verify_otp(data):
     otp_entered = str(data.get("otp"))
     if not email or not otp_entered:
         return jsonify({"success": False, "message": "Missing email or OTP"}), 400
+
+    user = users_collection.find_one({"email": email})
+    if not user:
+        return jsonify({"success": False, "message": "User not found"}), 404
+    if user.get("blocked"):
+        return jsonify({"success": False, "message": "You are blocked"}), 403
+
     correct_otp = get_otp_for(email)
     if not correct_otp:
         return jsonify({"success": False, "message": "No OTP found. Try again."}), 404
+
     if otp_entered == correct_otp:
         reset_attempts(email)
         otp_store.pop(email, None)
+        users_collection.update_one({"email": email}, {"$set": {"otp_attempts": 0}})
         return jsonify({"success": True, "message": "OTP verified"}), 200
     else:
-        attempts = increment_attempt(email)
+        attempts = user.get("otp_attempts", 0) + 1
+        update = {"otp_attempts": attempts}
         if attempts >= 3:
+            update["blocked"] = True
+            update["blocked_ip"] = request.remote_addr
+            users_collection.update_one({"email": email}, {"$set": update})
             return jsonify({"success": False, "message": "3 wrong attempts. Blocked."}), 403
+        users_collection.update_one({"email": email}, {"$set": {"otp_attempts": attempts}})
         return jsonify({"success": False, "message": f"Wrong OTP ({attempts}/3)"}), 401
 
 # ------------------ Password ------------------
@@ -148,7 +170,7 @@ def verify_iris(data):
         diff = np.abs(stored_img.astype(np.int32) - test_img.astype(np.int32))
         score = np.mean(diff)
 
-        if score < 10:  # Threshold – adjust based on environment
+        if score < 10:
             return jsonify({"success": True, "message": "Iris matched"}), 200
         else:
             return jsonify({"success": False, "message": "Iris did not match"}), 403

@@ -1,23 +1,76 @@
-/* DashboardPage.css */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0d1117;
+  font-family: 'Segoe UI', sans-serif;
+}
+
 .dashboard-container {
-  max-width: 600px;
-  margin: 50px auto;
-  background-color: #181818;
-  color: #f1f1f1;
+  max-width: 700px;
+  margin: 40px auto;
   padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  background-color: #161b22;
+  border-radius: 15px;
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.1);
+  color: #f0f6fc;
   text-align: center;
 }
 
-.dashboard-info {
-  background: #262626;
-  padding: 20px;
-  border-radius: 8px;
-  margin-top: 20px;
+h2 {
+  color: #58a6ff;
+  margin-bottom: 10px;
 }
 
-.dashboard-info ul {
-  text-align: left;
-  padding-left: 20px;
+h3, h4 {
+  margin-top: 30px;
+  color: #79c0ff;
+}
+
+p {
+  color: #c9d1d9;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 15px;
+}
+
+ul li {
+  padding: 8px;
+  background-color: #21262d;
+  margin-bottom: 8px;
+  border-radius: 5px;
+  color: #f0f6fc;
+}
+
+button {
+  margin: 10px 5px;
+  padding: 10px 20px;
+  background: linear-gradient(to right, #1f6feb, #3b82f6);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: linear-gradient(to right, #3b82f6, #1f6feb);
+}
+
+input {
+  padding: 10px;
+  margin-top: 10px;
+  margin-right: 10px;
+  border: 1px solid #30363d;
+  background: #0d1117;
+  color: #f0f6fc;
+  border-radius: 6px;
+  width: 60%;
+}
+
+.delete-section {
+  margin-top: 20px;
 }
