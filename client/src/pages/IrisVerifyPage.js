@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "./IrisVerifyPage.css"; // make sure this file exists with the styles
 
 export default function IrisVerifyPage() {
   const [message, setMessage] = useState("");
@@ -30,32 +31,14 @@ export default function IrisVerifyPage() {
   };
 
   return (
-    <div
-      style={{
-        maxWidth: 400,
-        margin: "100px auto",
-        background: "#111",
-        color: "white",
-        padding: 20,
-        borderRadius: 10,
-        textAlign: "center",
-      }}
-    >
-      <h2>Iris Verification</h2>
-      <button
-        onClick={handleVerify}
-        disabled={loading}
-        style={{
-          padding: 10,
-          backgroundColor: "#3f7a6f",
-          color: "white",
-          border: "none",
-          borderRadius: 5,
-        }}
-      >
-        {loading ? "Verifying..." : "Press 's' to scan & verify iris"}
-      </button>
-      <p>{message}</p>
+    <div className="iris-verify-container">
+      <div className="iris-verify-card">
+        <h2>Iris Verification</h2>
+        <button onClick={handleVerify} disabled={loading}>
+          {loading ? "Verifying..." : "Verify Iris"}
+        </button>
+        <p className="message">{message}</p>
+      </div>
     </div>
   );
 }

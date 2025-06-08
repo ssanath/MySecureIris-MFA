@@ -1,14 +1,17 @@
-# otp_util.py – OTP generation, email sending, attempt tracking
-
 import smtplib
 import random
+import os
+import datetime
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from dotenv import load_dotenv
 
-# Stores OTPs temporarily: { email: "123456" }
+# Load credentials from .env
+load_dotenv()
+sender_email = os.getenv("EMAIL_USER")
+sender_password = os.getenv("EMAIL_PASS")
+
 otp_store = {}
-
-# Stores OTP verification attempts: { email: 1, 2, 3 }
 otp_attempts = {}
 
 # Generate a random 6-digit OTP
@@ -17,9 +20,6 @@ def generate_otp():
 
 # Send OTP to user via email
 def send_otp_email(receiver_email, otp):
-    sender_email = "pjyotsna2603@gmail.com"      # ✅ your Gmail
-    sender_password = "iwiwkqeprwfmxdav"          # ✅ your Gmail App Password
-
     subject = "Your OTP Code"
     body = f"Your OTP code is: {otp}"
 
@@ -37,22 +37,50 @@ def send_otp_email(receiver_email, otp):
         server.quit()
         return True
     except Exception as e:
-        print(f"Email send error: {e}")
+        print(f"❌ Email send error: {e}")
         return False
 
-# Get the stored OTP for a given email
+# Send suspicious activity alert to yourself
+def send_alert_email(email, ip):
+    subject = "🚨 Suspicious Activity Detected"
+    body = f"""
+    Suspicious login attempt detected!
+
+    Email: {email}
+    IP Address: {ip}
+    Time: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+
+    This user has been blocked after 3 failed OTP attempts.
+    """
+
+    msg = MIMEMultipart()
+    msg["From"] = sender_email
+    msg["To"] = sender_email  # Send alert to yourself
+    msg["Subject"] = subject
+    msg.attach(MIMEText(body, "plain"))
+
+    try:
+        server = smtplib.SMTP("smtp.gmail.com", 587)
+        server.starttls()
+        server.login(sender_email, sender_password)
+        server.sendmail(sender_email, sender_email, msg.as_string())
+        server.quit()
+        print("🚨 Alert email sent!")
+        return True
+    except Exception as e:
+        print("❌ Failed to send alert email:", e)
+        return False
+
+# OTP store helpers
 def get_otp_for(email):
     return otp_store.get(email)
 
-# Increment and return OTP attempt count
 def increment_attempt(email):
     otp_attempts[email] = otp_attempts.get(email, 0) + 1
     return otp_attempts[email]
 
-# Reset OTP attempt count after success
 def reset_attempts(email):
     otp_attempts.pop(email, None)
 
-# Clear OTP from memory after success
 def clear_otp(email):
     otp_store.pop(email, None)

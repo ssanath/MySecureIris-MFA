@@ -8,16 +8,17 @@ from bson.objectid import ObjectId
 from models.user_model import users_collection
 from utils.otp_util import (
     generate_otp, send_otp_email, otp_store,
-    get_otp_for, increment_attempt, reset_attempts
+    get_otp_for, increment_attempt, reset_attempts,
+    send_alert_email  # ✅ imported alert function
 )
 from db import db
+
 users_collection = db["users"]
 
+# ------------------ Eye Detection ------------------
 
 CASCADE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../utils/haarcascade_eye.xml"))
 eye_cascade = cv2.CascadeClassifier(CASCADE_PATH)
-
-# ------------------ Image Processing ------------------
 
 def decode_image(b64_img):
     img_bytes = base64.b64decode(b64_img.split(",")[1])
@@ -46,10 +47,13 @@ def register_user(data):
     password = data.get("password")
     if not email or not password:
         return jsonify({"success": False, "message": "Missing fields"}), 400
+
     if users_collection.find_one({"email": email}):
         return jsonify({"success": False, "message": "User already exists"}), 409
+
     hashed_pw = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
     user_id = str(ObjectId())
+
     users_collection.insert_one({
         "user_id": user_id,
         "email": email,
@@ -59,6 +63,7 @@ def register_user(data):
         "blocked": False,
         "blocked_ip": None
     })
+
     return jsonify({"success": True, "message": "User registered"}), 201
 
 # ------------------ OTP ------------------
@@ -104,11 +109,21 @@ def verify_otp(data):
     else:
         attempts = user.get("otp_attempts", 0) + 1
         update = {"otp_attempts": attempts}
+
         if attempts >= 3:
             update["blocked"] = True
-            update["blocked_ip"] = request.remote_addr
+            update["blocked_ip"] = request.remote_addr or "unknown"
             users_collection.update_one({"email": email}, {"$set": update})
-            return jsonify({"success": False, "message": "3 wrong attempts. Blocked."}), 403
+
+            # 🔔 Send alert to admin
+            send_alert_email(email, request.remote_addr)
+
+            return jsonify({
+                "success": False,
+                "redirect": "/fakedashboard",
+                "message": "3 wrong attempts. Redirecting to secure dashboard."
+            }), 200
+
         users_collection.update_one({"email": email}, {"$set": {"otp_attempts": attempts}})
         return jsonify({"success": False, "message": f"Wrong OTP ({attempts}/3)"}), 401
 

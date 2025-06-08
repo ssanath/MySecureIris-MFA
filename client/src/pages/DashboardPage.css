@@ -1,76 +1,155 @@
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #0d1117;
-  font-family: 'Segoe UI', sans-serif;
-}
-
 .dashboard-container {
-  max-width: 700px;
-  margin: 40px auto;
-  padding: 30px;
-  background-color: #161b22;
-  border-radius: 15px;
-  box-shadow: 0 0 12px rgba(0, 255, 255, 0.1);
-  color: #f0f6fc;
-  text-align: center;
+  min-height: 100vh;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  color: #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-h2 {
-  color: #58a6ff;
+.dashboard-container h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.dashboard-container p {
   margin-bottom: 10px;
+  color: #cbd5e1;
 }
 
-h3, h4 {
-  margin-top: 30px;
-  color: #79c0ff;
+.dashboard-info {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(100, 149, 237, 0.4);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 0 16px rgba(100, 149, 237, 0.4);
+  padding: 28px;
+  margin: 30px 0;
+  width: 100%;
+  max-width: 720px;
 }
 
-p {
-  color: #c9d1d9;
+.dashboard-info h3 {
+  font-size: 20px;
+  margin-bottom: 16px;
+  color: #93c5fd;
 }
 
-ul {
-  list-style: none;
-  padding: 0;
-  margin-top: 15px;
+.dashboard-info ul {
+  list-style-type: none;
+  padding-left: 0;
 }
 
-ul li {
-  padding: 8px;
-  background-color: #21262d;
-  margin-bottom: 8px;
-  border-radius: 5px;
-  color: #f0f6fc;
+.dashboard-info li {
+  margin: 6px 0;
+  color: #e2e8f0;
 }
 
-button {
-  margin: 10px 5px;
-  padding: 10px 20px;
-  background: linear-gradient(to right, #1f6feb, #3b82f6);
+.resource-section {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(100, 149, 237, 0.4);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 0 16px rgba(100, 149, 237, 0.4);
+  padding: 28px;
+  width: 100%;
+  max-width: 720px;
+}
+
+.resource-section h3,
+.resource-section h4 {
+  color: #93c5fd;
+  margin-bottom: 14px;
+}
+
+.resource-section button {
+  padding: 12px 20px;
+  margin-right: 12px;
+  background: linear-gradient(90deg, #6366f1, #4f46e5);
   color: white;
   border: none;
-  border-radius: 8px;
-  font-weight: bold;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
   cursor: pointer;
   transition: background 0.3s ease;
+  margin-bottom: 14px;
 }
 
-button:hover {
-  background: linear-gradient(to right, #3b82f6, #1f6feb);
+.resource-section button:hover {
+  background: linear-gradient(90deg, #4f46e5, #4338ca);
 }
 
-input {
-  padding: 10px;
-  margin-top: 10px;
-  margin-right: 10px;
-  border: 1px solid #30363d;
-  background: #0d1117;
-  color: #f0f6fc;
-  border-radius: 6px;
-  width: 60%;
+.resource-section ul {
+  list-style-type: none;
+  padding-left: 0;
+  color: #e0f2fe;
+  margin-bottom: 20px;
 }
 
 .delete-section {
   margin-top: 20px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.delete-section input {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  background-color: #1e293b;
+  color: #f8fafc;
+  font-size: 14px;
+  min-width: 220px;
+}
+
+.delete-section input::placeholder {
+  color: #94a3b8;
+  opacity: 0.9;
+}
+
+.delete-section input:focus {
+  border-color: #4f46e5;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.4);
+}
+
+.delete-section button {
+  padding: 12px 18px;
+  background: linear-gradient(90deg, #ef4444, #dc2626);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.delete-section button:hover {
+  background: linear-gradient(90deg, #dc2626, #b91c1c);
+}
+
+.logout-button {
+  margin-top: 40px;
+  padding: 12px 24px;
+  background: linear-gradient(90deg, #f87171, #ef4444);
+  color: white;
+  font-weight: 500;
+  font-size: 15px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.logout-button:hover {
+  background: linear-gradient(90deg, #ef4444, #dc2626);
 }

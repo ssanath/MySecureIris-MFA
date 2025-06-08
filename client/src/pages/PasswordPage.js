@@ -34,8 +34,8 @@ function PasswordPage() {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-card">
+    <div className="password-page-container">
+      <div className="password-card">
         <h2>Enter Password</h2>
         <input
           type="password"

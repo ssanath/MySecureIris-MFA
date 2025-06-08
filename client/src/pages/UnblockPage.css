@@ -1,0 +1,44 @@
+.unblock-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #edf2f4;
+}
+
+.unblock-card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  width: 320px;
+  text-align: center;
+}
+
+.unblock-card h2 {
+  margin-bottom: 20px;
+  color: #2b2d42;
+}
+
+.unblock-card input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #8d99ae;
+  border-radius: 6px;
+}
+
+.unblock-card button {
+  width: 100%;
+  padding: 10px;
+  background-color: #2b2d42;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.unblock-card button:hover {
+  background-color: #1f2235;
+}

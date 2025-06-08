@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./LoginPage.css";
@@ -21,7 +21,7 @@ function LoginPage() {
     }
     setShake(true);
     setTimeout(() => {
-      navigate("/fake");
+      navigate("/fake-dashboard"); // 🔁 Updated to go to fake dashboard first
     }, 1000);
   };
 
@@ -49,7 +49,7 @@ function LoginPage() {
         setOtpVerified(true);
       } else {
         setMessage("❌ " + response.data.message);
-        if (response.data.message.includes("3 wrong attempts")) {
+        if (response.data.redirect) {
           await logIpAndRedirect();
         }
       }
@@ -75,7 +75,7 @@ function LoginPage() {
   };
 
   return (
-    <div className="login-container">
+    <div className="login-page-container">
       <div className={`login-card ${shake ? "shake" : ""}`}>
         <h2>Login</h2>
 

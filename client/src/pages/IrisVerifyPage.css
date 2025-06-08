@@ -1,23 +1,67 @@
+/* IrisVerifyPage.css */
+
 .iris-verify-container {
-  max-width: 400px;
-  margin: 80px auto;
-  background-color: #111;
-  color: white;
-  padding: 30px;
-  text-align: center;
-  border-radius: 10px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  padding: 20px;
 }
 
-.iris-verify-container button {
-  padding: 10px 20px;
-  font-weight: bold;
-  background-color: #009688;
+.iris-verify-card {
+  background: rgba(15, 23, 42, 0.6);
+  padding: 42px 36px;
+  border-radius: 18px;
+  border: 1px solid rgba(100, 149, 237, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 0 20px rgba(100, 149, 237, 0.4);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  transition: box-shadow 0.3s ease, border 0.3s ease;
+}
+
+.iris-verify-card:hover {
+  border: 1px solid rgba(99, 102, 241, 0.8);
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.6);
+}
+
+.iris-verify-card h2 {
+  color: #f1f5f9;
+  margin-bottom: 24px;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.iris-verify-card button {
+  padding: 14px;
+  width: 100%;
+  background: linear-gradient(90deg, #6366f1, #4f46e5);
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
   cursor: pointer;
+  transition: background 0.3s ease;
 }
 
-.iris-verify-container button:hover {
-  background-color: #00796b;
+.iris-verify-card button:hover {
+  background: linear-gradient(90deg, #4f46e5, #4338ca);
+}
+
+
+.iris-verify-card button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.message {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #22c55e;
+  text-align: center;
 }

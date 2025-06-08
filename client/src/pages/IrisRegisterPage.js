@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './IrisRegisterPage.css';
 
 function IrisRegisterPage() {
   const [message, setMessage] = useState('');
@@ -27,16 +28,14 @@ function IrisRegisterPage() {
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: '100px auto', background: '#111', color: 'white', padding: 20, borderRadius: 10, textAlign: 'center' }}>
-      <h2>Iris Registration</h2>
-      <button
-        onClick={handleIrisRegister}
-        disabled={loading}
-        style={{ padding: 10, backgroundColor: '#3f51b5', color: 'white', border: 'none', borderRadius: 5 }}
-      >
-        {loading ? 'Scanning...' : 'Scan & Register Iris'}
-      </button>
-      <p>{message}</p>
+    <div className="iris-register-container">
+      <div className="iris-card">
+        <h2>Iris Registration</h2>
+        <button onClick={handleIrisRegister} disabled={loading}>
+          {loading ? 'Scanning...' : 'Scan & Register Iris'}
+        </button>
+        {message && <p className="message">{message}</p>}
+      </div>
     </div>
   );
 }

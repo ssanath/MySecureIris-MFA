@@ -1,0 +1,54 @@
+.fake-dashboard-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  padding: 20px;
+  color: #f1f5f9;
+  text-align: center;
+}
+
+.fake-dashboard-container h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #60a5fa; /* Light blue for heading */
+}
+
+.warning-text {
+  color: #facc15;
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+
+.fake-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.fake-buttons button {
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  background: linear-gradient(90deg, #4f46e5, #6366f1); /* match blue */
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.fake-buttons button:hover {
+  background: linear-gradient(90deg, #4338ca, #4f46e5);
+  transform: scale(1.02);
+}
+
+.fake-buttons button:active {
+  transform: scale(0.98);
+}

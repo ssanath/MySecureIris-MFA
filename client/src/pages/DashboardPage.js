@@ -1,39 +1,72 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./DashboardPage.css";
 
 function DashboardPage() {
+  const navigate = useNavigate();
   const email = localStorage.getItem("email");
   const [resources, setResources] = useState([]);
-  const [refresh, setRefresh] = useState(false);
   const [deleteName, setDeleteName] = useState("");
 
   useEffect(() => {
-    if (email) {
-      axios.get(`http://localhost:5050/api/resource/list/${email}`)
-        .then(res => setResources(res.data.resources))
-        .catch(err => console.error(err));
+    if (!email) {
+      alert("Session expired. Please login again.");
+      navigate("/register");
+      return;
     }
-  }, [email, refresh]);
 
-  const createResource = (type) => {
-    axios.post("http://localhost:5050/api/resource/create", {
-      type: type,
-      email: email
-    }).then(res => {
-      alert(res.data.message);
-      setRefresh(!refresh);
-    }).catch(err => alert("Error creating " + type));
+    const fetchResources = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5050/api/resource/list/${email}`);
+        setResources(res.data.resources || []);
+      } catch (err) {
+        console.error("Error fetching resources:", err);
+        alert("Error loading your resources.");
+      }
+    };
+
+    fetchResources();
+  }, [email, navigate]);
+
+  const createResource = async (type) => {
+    try {
+      const res = await axios.post("http://localhost:5050/api/resource/create", {
+        email,
+        type,
+      });
+      alert(res.data.message || `${type} created.`);
+      // Refresh list
+      const updatedRes = await axios.get(`http://localhost:5050/api/resource/list/${email}`);
+      setResources(updatedRes.data.resources || []);
+    } catch (err) {
+      console.error(`Error creating ${type}:`, err);
+      alert(`Error creating ${type}`);
+    }
   };
 
-  const deleteResource = () => {
-    if (!deleteName) return alert("Enter a resource name");
-    axios.delete(`http://localhost:5050/api/resource/delete/${deleteName}`)
-      .then(res => {
-        alert(res.data.message);
-        setDeleteName("");
-        setRefresh(!refresh);
-      }).catch(err => alert("Delete failed"));
+  const deleteResource = async () => {
+    if (!deleteName.trim()) {
+      alert("Please enter a resource name.");
+      return;
+    }
+
+    try {
+      const res = await axios.delete(`http://localhost:5050/api/resource/delete/${deleteName}`);
+      alert(res.data.message || "Resource deleted.");
+      setDeleteName("");
+      const updatedRes = await axios.get(`http://localhost:5050/api/resource/list/${email}`);
+      setResources(updatedRes.data.resources || []);
+    } catch (err) {
+      console.error("Delete error:", err);
+      alert("Failed to delete resource.");
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    alert("🚪 Logged out successfully.");
+    navigate("/register");
   };
 
   return (
@@ -44,7 +77,7 @@ function DashboardPage() {
 
       <div className="dashboard-info">
         <h3>🔍 Confidential Info</h3>
-        <p>This dashboard displays sensitive tender information and company documents. Handle with care.</p>
+        <p>This dashboard displays sensitive tender information and company documents.</p>
         <ul>
           <li>📁 Tender_001_Confidential.pdf</li>
           <li>📁 Budget2025_Draft.xlsx</li>
@@ -78,6 +111,10 @@ function DashboardPage() {
           <button onClick={deleteResource}>Delete</button>
         </div>
       </div>
+
+      <button className="logout-button" onClick={handleLogout}>
+        Logout
+      </button>
     </div>
   );
 }
