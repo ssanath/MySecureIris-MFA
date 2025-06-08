@@ -14,6 +14,9 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* ✅ Add this to fix "/" blank screen */}
+        <Route path="/" element={<RegisterPage />} />
+
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/password" element={<PasswordPage />} />
@@ -21,8 +24,11 @@ function App() {
         <Route path="/iris-verify" element={<IrisVerifyPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/fake" element={<FakePage />} />
-        + <Route path="/fake-dashboard" element={<FakeDashboardPage />} />
+        <Route path="/fake-dashboard" element={<FakeDashboardPage />} />
         <Route path="/unblock" element={<UnblockPage />} />
+
+        {/* Optional: 404 fallback */}
+        <Route path="*" element={<h1>404 - Page Not Found</h1>} />
       </Routes>
     </Router>
   );
