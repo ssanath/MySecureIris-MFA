@@ -2,9 +2,11 @@
 # user_model.py — MongoDB user schema + dummy insert
 
 from pymongo import MongoClient
+import os
 
 # Connect to MongoDB
-client = MongoClient("mongodb://localhost:27017/")
+MONGO_URI = os.getenv("mongodb+srv://sanath:apr26@cluster0.zst7rqb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+client = MongoClient(MONGO_URI)
 db = client["secure_iris"]
 users_collection = db["users"]
 
