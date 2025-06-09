@@ -6,3 +6,4 @@ flask-cors
 gunicorn
 opencv-python
 python-dotenv
+pytz
