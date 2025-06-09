@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from datetime import datetime
+import pytz
 from db import db
 from user_agents import parse  # 🧠 External parser for better detection
 
@@ -12,19 +13,23 @@ def log_honeypot_action():
     ua_string = request.headers.get("User-Agent")
     parsed_ua = parse(ua_string)
 
+    # ✅ Get current IST time in plain string format
+    ist = pytz.timezone("Asia/Kolkata")
+    timestamp_ist_str = datetime.now(ist).strftime("%Y-%m-%d %H:%M:%S")  # e.g., "2025-06-09 15:30:12"
+
     log_entry = {
         "ip": request.remote_addr,
         "route": data.get("route", ""),
         "action": data.get("action", ""),
         "userAgent": ua_string,
-        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "timestamp": timestamp_ist_str,
         "email": data.get("email", ""),
-        "browser": parsed_ua.browser.family,       # ✅ e.g., Chrome
-        "platform": parsed_ua.os.family,           # ✅ e.g., macOS
-        "deviceType": parsed_ua.device.family,     # ✅ e.g., Mac, iPhone, etc.
+        "browser": parsed_ua.browser.family,
+        "platform": parsed_ua.os.family,
+        "deviceType": parsed_ua.device.family,
         "language": request.headers.get("Accept-Language"),
-        "screenSize": data.get("screenSize", ""),  # Optional: sent from frontend
-        "fakePayload": data.get("payload", {})     # Optional: any fake data passed
+        "screenSize": data.get("screenSize", ""),
+        "fakePayload": data.get("payload", {})
     }
 
     honeypot_logs.insert_one(log_entry)

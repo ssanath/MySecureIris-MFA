@@ -13,21 +13,23 @@ function LoginPage() {
   const [shake, setShake] = useState(false);
   const navigate = useNavigate();
 
+  const API = process.env.REACT_APP_BACKEND_URL;
+
   const logIpAndRedirect = async () => {
     try {
-      await axios.post("/api/auth/log-ip", { email });
+      await axios.post(`${API}/api/auth/log-ip`, { email }, { withCredentials: true });
     } catch (err) {
       console.error("IP logging failed");
     }
     setShake(true);
     setTimeout(() => {
-      navigate("/fake-dashboard"); // 🔁 Updated to go to fake dashboard first
+      navigate("/fake-dashboard");
     }, 1000);
   };
 
   const handleSendOTP = async () => {
     try {
-      const response = await axios.post("/api/auth/send-otp", { email });
+      const response = await axios.post(`${API}/api/auth/send-otp`, { email }, { withCredentials: true });
       if (response.data.success) {
         setMessage("✅ OTP sent to your email.");
         setOtpSent(true);
@@ -42,7 +44,7 @@ function LoginPage() {
 
   const handleVerifyOTP = async () => {
     try {
-      const response = await axios.post("/api/auth/verify-otp", { email, otp });
+      const response = await axios.post(`${API}/api/auth/verify-otp`, { email, otp }, { withCredentials: true });
 
       if (response.data.success) {
         setMessage("✅ OTP verified. Please enter your password.");
