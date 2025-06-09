@@ -4,11 +4,12 @@ import "./FakePage.css";
 
 const FakePage = () => {
   const [ip, setIp] = useState("");
+  const API = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
     const fetchIp = async () => {
       try {
-        const res = await axios.get("/api/auth/get-ip");
+        const res = await axios.get(`${API}/api/auth/get-ip`, { withCredentials: true });
         setIp(res.data.ip);
       } catch (err) {
         console.error("Failed to fetch IP");
@@ -16,7 +17,7 @@ const FakePage = () => {
     };
 
     fetchIp();
-  }, []);
+  }, [API]);
 
   return (
     <div className="fake-container">

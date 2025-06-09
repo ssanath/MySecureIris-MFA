@@ -1,19 +1,21 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "./IrisVerifyPage.css"; // make sure this file exists with the styles
+import "./IrisVerifyPage.css";
 
 export default function IrisVerifyPage() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const API = process.env.REACT_APP_BACKEND_URL;
+
   const handleVerify = async () => {
     setLoading(true);
     setMessage("");
 
     try {
-      const res = await axios.post("/api/iris/verify");
+      const res = await axios.post(`${API}/api/iris/verify`, {}, { withCredentials: true });
       if (res.data.success) {
         setMessage("✅ Iris verified successfully!");
         setTimeout(() => {

@@ -5,12 +5,12 @@ import "./FakeDashboardPage.css";
 
 function FakeDashboardPage() {
   const navigate = useNavigate();
+  const API = process.env.REACT_APP_BACKEND_URL;
 
   const handleFakeClick = async (action) => {
     const email = localStorage.getItem("email");
     const screenSize = `${window.innerWidth}x${window.innerHeight}`;
 
-    // Optional: Fake data per action for realism
     const fakePayload = {
       "Create VM": { cpu: "2 vCPU", ram: "4GB", region: "us-west-1" },
       "Add Storage": { name: "bucket42", size: "20GB" },
@@ -30,13 +30,13 @@ function FakeDashboardPage() {
     };
 
     try {
-      await axios.post("http://localhost:5050/api/honeypot/log", logData);
+      await axios.post(`${API}/api/honeypot/log`, logData, { withCredentials: true });
     } catch (error) {
       console.error("📛 Failed to log honeypot activity:", error);
     }
 
     alert(`${action} simulated.`);
-    navigate("/fake"); // Redirect to trap page
+    navigate("/fake");
   };
 
   return (

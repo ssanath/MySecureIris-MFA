@@ -26,10 +26,10 @@ function RegisterPage() {
     setMessage("");
 
     try {
-      const response = await axios.post("/api/auth/register", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/api/auth/register`,
+        { email, password }
+      );
 
       if (response.data.success) {
         setMessage("✅ Registered successfully! Redirecting to login...");

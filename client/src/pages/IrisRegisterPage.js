@@ -6,11 +6,13 @@ function IrisRegisterPage() {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const API = process.env.REACT_APP_BACKEND_URL;
+
   const handleIrisRegister = async () => {
     setLoading(true);
     setMessage('');
     try {
-      const res = await axios.post('/api/iris/register');
+      const res = await axios.post(`${API}/api/iris/register`, {}, { withCredentials: true });
       if (res.data.success) {
         setMessage('✅ Iris registered successfully!');
         setTimeout(() => {

@@ -8,6 +8,7 @@ function DashboardPage() {
   const email = localStorage.getItem("email");
   const [resources, setResources] = useState([]);
   const [deleteName, setDeleteName] = useState("");
+  const API = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
     if (!email) {
@@ -18,7 +19,9 @@ function DashboardPage() {
 
     const fetchResources = async () => {
       try {
-        const res = await axios.get(`http://localhost:5050/api/resource/list/${email}`);
+        const res = await axios.get(`${API}/api/resource/list/${email}`, {
+          withCredentials: true,
+        });
         setResources(res.data.resources || []);
       } catch (err) {
         console.error("Error fetching resources:", err);
@@ -27,17 +30,19 @@ function DashboardPage() {
     };
 
     fetchResources();
-  }, [email, navigate]);
+  }, [email, navigate, API]);
 
   const createResource = async (type) => {
     try {
-      const res = await axios.post("http://localhost:5050/api/resource/create", {
-        email,
-        type,
-      });
+      const res = await axios.post(
+        `${API}/api/resource/create`,
+        { email, type },
+        { withCredentials: true }
+      );
       alert(res.data.message || `${type} created.`);
-      // Refresh list
-      const updatedRes = await axios.get(`http://localhost:5050/api/resource/list/${email}`);
+      const updatedRes = await axios.get(`${API}/api/resource/list/${email}`, {
+        withCredentials: true,
+      });
       setResources(updatedRes.data.resources || []);
     } catch (err) {
       console.error(`Error creating ${type}:`, err);
@@ -52,10 +57,14 @@ function DashboardPage() {
     }
 
     try {
-      const res = await axios.delete(`http://localhost:5050/api/resource/delete/${deleteName}`);
+      const res = await axios.delete(`${API}/api/resource/delete/${deleteName}`, {
+        withCredentials: true,
+      });
       alert(res.data.message || "Resource deleted.");
       setDeleteName("");
-      const updatedRes = await axios.get(`http://localhost:5050/api/resource/list/${email}`);
+      const updatedRes = await axios.get(`${API}/api/resource/list/${email}`, {
+        withCredentials: true,
+      });
       setResources(updatedRes.data.resources || []);
     } catch (err) {
       console.error("Delete error:", err);
