@@ -9,7 +9,12 @@ iris_bp = Blueprint('iris', __name__)
 def iris_register_route():
     try:
         script_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'convert_iris.py'))
-        python_path = os.path.join(os.environ['CONDA_PREFIX'], 'bin', 'python')  # Ensure correct python path
+        conda_prefix = os.environ.get('CONDA_PREFIX')
+        if conda_prefix:
+            python_path = os.path.join(conda_prefix, 'bin', 'python')
+        else:
+            # fallback to system python
+            python_path = 'python'  # or 'python3' depending on your OS
 
         result = subprocess.run([python_path, script_path], capture_output=True, text=True)
 
@@ -29,7 +34,12 @@ def iris_verify_route():
         # Step 1: Capture iris live
         capture_script = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'save_live.py'))
         match_script = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'match.py'))
-        python_path = os.path.join(os.environ['CONDA_PREFIX'], 'bin', 'python')
+        conda_prefix = os.environ.get('CONDA_PREFIX')
+        if conda_prefix:
+            python_path = os.path.join(conda_prefix, 'bin', 'python')
+        else:
+            # fallback to system python
+            python_path = 'python'  # or 'python3' depending on your OS
 
         # Run webcam capture
         capture_result = subprocess.run([python_path, capture_script], capture_output=True, text=True)

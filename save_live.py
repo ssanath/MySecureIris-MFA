@@ -1,5 +1,7 @@
 import cv2
 import os
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
 
 # Paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -17,7 +19,7 @@ os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
 # Start webcam
 cap = cv2.VideoCapture(0)
-print("📸 Show your eye to the webcam. Press 's' to capture, 'q' to quit.")
+print("Show your eye to the webcam. Press 's' to capture, 'q' to quit.")
 
 while True:
     ret, frame = cap.read()

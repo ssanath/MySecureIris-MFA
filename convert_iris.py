@@ -1,5 +1,7 @@
 import cv2
 import os
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
 
 # Ensure output directory exists
 output_dir = os.path.join(os.getcwd(), "debug_iris")
@@ -11,7 +13,7 @@ eye_cascade = cv2.CascadeClassifier(cascade_path)
 
 # Start webcam
 cap = cv2.VideoCapture(0)
-print("📸 Starting webcam. Press 's' to capture, 'q' to quit.")
+print("Starting webcam. Press 's' to capture, 'q' to quit.")
 
 while True:
     ret, frame = cap.read()
