@@ -13,7 +13,8 @@ app = Flask(__name__)
 CORS(app, supports_credentials=True, origins=[
     "http://localhost:3000",
     "https://secureiris-mfa.onrender.com",
-    "https://mysecureiris-frontend.onrender.com"
+    "https://mysecureiris-frontend.onrender.com",
+    "https://mysecureiris-mfa-1.onrender.com"
 ])
 
 # ✅ Register routes (blueprints)
