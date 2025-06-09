@@ -4,3 +4,4 @@ dnspython
 bcrypt
 flask-cors
 gunicorn
+opencv-python
